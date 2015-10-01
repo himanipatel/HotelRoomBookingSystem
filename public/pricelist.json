@@ -1,0 +1,46 @@
+{"roomtype":[
+        {
+            "name":"singlerooma",
+            "price":"$150 USD"
+        },
+        {
+            "name":"singleroomb",
+            "price":"$160 USD"
+        },
+        {
+            "name":"singleroomc",
+            "price":"$130 USD"
+        },
+        {
+            "name":"singleroomd",
+            "price":"$120 USD"
+        },
+        {
+            "name":"doublerooma",
+            "price":"$180 USD"
+        },
+        {
+            "name":"doubleroomb",
+            "price":"$190 USD"
+        },
+        {
+            "name":"doubleroomc",
+            "price":"$185 USD"
+        },
+        {
+            "name":"doubleroomd",
+            "price":"$200 USD"
+        },
+        {
+            "name":"suiterooma",
+            "price":"$250 USD"
+        },
+        {
+            "name":"suiteroomb",
+            "price":"$270 USD"
+        },
+        {
+            "name":"suiteroomc",
+            "price":"$300 USD"
+        }
+]}

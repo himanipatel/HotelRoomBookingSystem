@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>The Paradise-Hotel</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <meta name="google-site-verification" content="vO6Ea87_ah24PvSHkMDH1i-FB-F5ES024G8r4QJ4m0" />
+        <meta name="description" content="Online hotel room reservation web site.">
+        <meta name="keywords" content="Online Hotel Reservation, Paradise Hotel, San Francisco">
+        <meta name="rating" content="General">
+        <meta name="revisit-after" content="7 days">
+        <meta name="ROBOTS" content="follow,all">
+        <meta NAME="Author" CONTENT="contact@paradise.com">
+        <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+        <script src="js/jquery.min.js"></script>      
+        <script src="js/jquery-ui.min.js"></script>       
+        <script src="js/fwslider.js"></script>
+        <link rel="stylesheet" href="css/fwslider.css" media="all">
+        <link rel="stylesheet" href="css/jquery-ui.css" />
+        <script src="js/jquery-ui.js"></script>
+        <script>
+            $(function () {
+                $("#datepicker,#datepicker1").datepicker();
+                $("#footerDiv").load("footer.html");
+                $("#headerDiv").load("header.html");
+            });
+        </script>   
+    </head>
+    <body>
+        <!-- start header -->
+        <div id="headerDiv"></div>
+        <!--start main -->
+        <div class="main_bg">
+            <div class="wrap">
+                <div class="main">
+                    <div>				
+                        <div>
+                            <div>
+                                <div>
+                                    <p>Your Review will help to serve you better!!!</p>
+                                    <br/>
+                                    <label>Name: </label><input type="text" id="name" /><br /><br />
+                                    Your Comments:<br /> <textarea id="review" rows=6 cols=40 maxlength=180 required></textarea><br /><br />
+                                    <div class="reviewBtn">
+                                        <button type="button" id="addreview" onclick="addReview();">Post Review</button>
+                                    </div>
+                                    <hr/>
+                                </div>
+                                <div id="reviewlistholder">
+                                    <h3>User Reviews</h3>
+                                     <hr />
+                                    <ul id="reviewlist">
+                                    </ul>
+                                </div>
+                            </div>
+                            <script type="text/javascript">
+                                if (window.openDatabase) {
+
+                                    var mydb = openDatabase("reviews_db", "0.1", "A Database of Cars I Like", 1024 * 1024);
+                                    mydb.transaction(function (t) {
+                                        t.executeSql("CREATE TABLE IF NOT EXISTS reviews (name TEXT PRIMARY KEY ASC, review TEXT)");
+                                    });
+                                } else {
+                                    alert("WebSQL is not supported by your browser!");
+                                }
+                                function addReview() {
+                                    if (mydb) {
+                                        var name = document.getElementById("name").value;
+                                        var review = document.getElementById("review").value;
+                                        if (name !== "" && review !== "") {
+                                            mydb.transaction(function (t) {
+                                                t.executeSql("INSERT INTO reviews (name,review) VALUES (?, ?)", [name, review]);
+                                                outputReviews();
+                                            });
+                                        } else {
+                                            alert("db not found, your browser does not support web sql!");
+                                        }
+                                    }
+                                }
+                                function updateReviewList(transaction, results) {
+                                    var listitems = "";
+                                    var listholder = document.getElementById("reviewlist");
+
+                                    listholder.innerHTML = "";
+
+                                    var i;
+                                    for (i = 0; i < results.rows.length; i++) {
+                                        var row = results.rows.item(i);
+
+                                        listholder.innerHTML += "<li>" + row.name + " - " + row.review + "</li>";
+                                    }
+                                }
+
+                                function outputReviews() {
+                                    if (mydb) {
+                                        mydb.transaction(function (t) {
+                                            t.executeSql("SELECT * FROM reviews", [], updateReviewList);
+                                        });
+                                    } else {
+                                        alert("db not found, your browser does not support web sql!");
+                                    }
+                                }
+                                outputReviews();
+                            </script>
+                        </div>
+                    </div>
+                    <div class="clear"></div>		
+                </div>
+            </div>
+        </div>		
+        <!--start main -->
+        <div id="footerDiv"></div>
+    </body>
+</html>

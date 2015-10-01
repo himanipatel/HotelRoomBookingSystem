@@ -1,0 +1,174 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>The Paradise-Hotel</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="css/jquery-ui.css" />
+    <script src="js/jquery-ui.js"></script>
+    <script>
+        $(function() {
+            $("#checkindate,#checkoutdate" ).datepicker();
+            $("#footerDiv").load("footer.html");
+            $("#headerDiv").load("header.html");
+            loadValues();
+        });
+         function GetQueryStringParams(sParam){
+                var sPageURL = window.location.search.substring(1);
+                var sURLVariables = sPageURL.split('&');
+                for (var i = 0; i < sURLVariables.length; i++)
+                {
+                    var sParameterName = sURLVariables[i].split('=');
+                    if (sParameterName[0] === sParam)
+                    {
+                        return sParameterName[1];
+                    }
+                }
+            }
+                
+            function loadValues(){
+                var roomtype = GetQueryStringParams('roomType');
+                var checkindate = GetQueryStringParams('checkindate');
+                var checkoutdate = GetQueryStringParams('checkoutdate');
+                var noofperson = GetQueryStringParams('noofperson');
+                var noofperson = GetQueryStringParams('noofperson');
+                var noofrooms = GetQueryStringParams('noofrooms');
+                var price = GetQueryStringParams('price');
+        
+                if(roomtype !== undefined){
+                    document.getElementById("roomType").value = roomtype;
+                }
+                if(checkindate !== undefined){
+                   document.getElementById("checkindate").value = checkindate.replace(/%2F/g,"/");
+                }
+                if(checkoutdate !== undefined){
+                    document.getElementById("checkoutdate").value = checkoutdate.replace(/%2F/g,"/");
+                }
+                if(noofperson !== undefined){
+                    document.getElementById("noofperson").value = noofperson;
+                }
+                if(noofrooms !== undefined && price !== undefined){
+                    document.getElementById("noofrooms").value = noofrooms;
+                    document.getElementById("lblRoomPrice").innerHTML = price;
+                    document.getElementById("lbltotalcost").innerHTML  = eval(noofrooms * price);
+                }
+            }
+          
+            function storeInLocalStorage(){                
+                var myForm = document.getElementById("frmRegisterForm");
+                if(myForm.checkValidity()){   
+                    var name = document.getElementById("fname").value + " " + document.getElementById("lname").value;
+                    sessionStorage.setItem("name", name);
+                    sessionStorage.setItem("email", document.getElementById("email").value);
+                    sessionStorage.setItem("phone", document.getElementById("phone").value);
+                    sessionStorage.setItem("checkindate", document.getElementById("checkindate").value);
+                    sessionStorage.setItem("checkoutdate", document.getElementById("checkoutdate").value);
+                    sessionStorage.setItem("noofrooms", document.getElementById("noofrooms").value);
+                    sessionStorage.setItem("roomtype", document.getElementById("roomType").value);
+                    sessionStorage.setItem("totalcost", document.getElementById("lbltotalcost").innerHTML);                    
+                    window.location.href='registersucess.html';
+                }
+                return false;
+            }
+    </script>
+</head>
+<body>
+<div id="headerDiv"></div>
+<div class="main_bg">
+    <div class="wrap">
+        <div class="main">
+            <form method="POST" id="frmRegisterForm">
+                <div class="res_online">
+                <h4>Reservation</h4>
+                <div class="span_of_2">
+                    <div class="span2_of_1">
+                        <h4>check-in:</h4>
+                        <div class="book_date btm">
+                            <div class="book_date">
+                                <input class="date" id="checkindate" type="text" placeholder="DD/MM/YY" required>
+                            </div>
+                        </div>
+                        <div class="sel_room">
+                            <h4>Room Type</h4>
+                            <select id="roomType" name="roomType" required>
+                                <option value="">Select a type of room</option>
+                                <option value="suite">Suite room</option>
+                                <option value="single">Single room</option>
+                                <option value="double">Double room</option>
+                            </select>
+                        </div>                      
+                        <div class="sel_room right">
+                            <h4>No Of rooms</h4>
+                            <select id="noofrooms" name="noofrooms">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="span2_of_1">
+                        <h4>check-out:</h4>
+                        <div class="book_date btm">
+                            <div class="book_date">
+                                <input class="date" id="checkoutdate" type="text" placeholder="DD/MM/YY" required>
+                            </div>
+                        </div>
+                        <div class="sel_room">
+                            <h4>adults per room:</h4>
+                            <select id="noofperson" name="noofperson">
+                                <option value="1">1</option>
+                                <option value="1">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                        </div>
+                        <br/>
+                    </div>
+                    <br/>
+                    <div>
+                        <h4>Price Detail</h4>
+                            <br/>
+                            Price of the Room: <label id="lblRoomPrice"></label>
+                            <br/>
+                            Total Cost: <label id="lbltotalcost"></label>
+                        </div>
+                        <br/>
+                            <h4>Personal Details:</h4> <br>
+                                <label for="fname">First Name:</label>  <input type="text" id="fname" required autofocus placeholder="Your Firstname"  TITLE="please enter the username more than three letters" >
+
+                            <br> <br>
+
+                            <label for="lname">Last Name:</label>  <input type="text" id="lname" required autofocus placeholder="Your Lastname" TITLE="please enter the username more than three letters" >
+
+                            <br> <br>
+                            <label for="email">Email:</label> <input type="email" id="email" required placeholder="Your Email" pattern="[a-zA-Z] {3,}@[a-zA-Z]{3,}[.] {1}[a-zA-Z}{2,}" TITLE="please enter the valid email address" >
+
+<br> <br>
+                            <label for="phone">Phone Number: </label><input type="tel" id="phone"  required placeholder="Please enter in your phone number" TITLE="please enter the valid phone number" >
+
+<br> <br>
+                            <label for="creditcard">Credit card:</label> 
+                            <input type="text" id="creditcard" required placeholder="Your Credit card number" TITLE="please enter the valid numbers" />
+
+                           
+                            </div>
+                        <br/>
+                         <div class="sel_room left">
+                                    <div class="res_btn">
+                                        <input type="submit" id="btnCheck" value="Confirm" onclick="return storeInLocalStorage();"  >
+                                    </div>
+                                </div>
+                            <div class="clear"></div>
+                                    </div>
+            </form>
+            </div>
+        </div>
+    </div>
+<div id="footerDiv"></div>
+</body>
+</html>

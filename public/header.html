@@ -1,0 +1,54 @@
+<div class="header_bg">
+<div class="wrap">
+	<div class="header">
+		<div class="logo">
+			<a href="index.html"><img src="images/logo.png" alt=""></a>
+		</div>
+		<div class="h_right">
+			<!--start menu -->
+			<ul class="menu">
+                            <li id="liHome"><a href="index.html">home</a></li> |
+                            <li id="liRoom"><a href="roomstariff.html">rooms & tariff</a></li> |
+                            <li id="liRervation"><a href="reservation.html">reservation</a></li> |
+                            <li id="liAboutUs"><a href="about.html">introduction</a></li> |
+                            <li id="liGallery"><a href="gallery.html">Gallery</a></li> |
+                            <li id="liContact"><a href="contact.html">contact</a></li>			
+			</ul>					
+                </div>
+		<div class="clear"></div>
+                <div class="top-nav">
+		<nav class="clearfix">
+                            <ul>
+                                <li><a href="index.html">home</a></li> 
+                                <li><a href="roomstariff.html">rooms & tariff</a></li> 
+                                <li><a href="reservation.html">reservation</a></li> 
+                                <li><a href="about.html">introduction</a></li>
+                                <li><a href="gallery.html">gallery</a></li>
+                                <li><a href="contact.html">contact</a></li> 
+                            </ul>
+                            <a href="#" id="pull">Menu</a>
+			</nav>
+                   
+		</div>
+	</div>
+      <script>
+		$(function() {                    
+			var pull 		= $('#pull');
+				menu 		= $('nav ul');
+				menuHeight	= menu.height();
+
+			$(pull).on('click', function(e) {
+                           	e.preventDefault();
+				menu.slideToggle();
+			});
+
+			$(window).resize(function(){
+        		var w = $(window).width();
+        		if(w > 320 && menu.is(':hidden')) {
+        			menu.removeAttr('style');
+        		}
+                    });
+		});
+    </script>
+</div>
+</div>

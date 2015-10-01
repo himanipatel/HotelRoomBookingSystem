@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>The Paradise-Hotel</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <meta name="google-site-verification" content="vO6Ea87_ah24PvSHkMDH1i-FB-F5ES024G8r4QJ4m0" />
+        <meta name="description" content="Online hotel room reservation web site.">
+        <meta name="keywords" content="Online Hotel Reservation, Paradise Hotel, San Francisco">
+        <meta name="rating" content="General">
+        <meta name="revisit-after" content="7 days">
+        <meta name="ROBOTS" content="follow,all">
+        <meta NAME="Author" CONTENT="contact@paradise.com">
+        <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+        <script src="js/jquery.min.js"></script>      
+        <script src="js/jquery-ui.min.js"></script>
+        <link rel="stylesheet" href="css/jquery-ui.css" />
+        <script src="js/jquery-ui.js"></script>     
+        <script>
+            $(function() {
+                loadValueFromStorage();
+            });
+             
+            function loadValueFromStorage(){
+                document.getElementById("lblname").innerHTML = sessionStorage.getItem("name");
+                document.getElementById("lblemail").innerHTML = sessionStorage.getItem("email");
+                document.getElementById("lblphone").innerHTML = sessionStorage.getItem("phone");
+                document.getElementById("lblcheckin").innerHTML = sessionStorage.getItem("checkindate");
+                document.getElementById("lblcheckout").innerHTML = sessionStorage.getItem("checkoutdate");
+                document.getElementById("lblnoofroom").innerHTML = sessionStorage.getItem("noofrooms");
+                document.getElementById("lblroom").innerHTML = sessionStorage.getItem("roomtype");
+                document.getElementById("lblprice").innerHTML = sessionStorage.getItem("totalcost");
+            }
+        </script>            
+    </head>
+    <body>
+       <div class="main_bg">
+            <div class="wrap">
+                <div class="main">
+                <br/>
+                <a href="index.html">Home</a>
+                <br/>
+                <br/>
+                <div class="introduction">
+                    <h4>Reservation Confirmation</h4>
+                    <p class="para">
+                        <b>Paradise Hotel - San Francisco</b>
+                    <br/>
+                    <label id="lblHotelAdd">600 Stockton Street, San Francisco, California 94108 USA</label>
+                    </p>
+                    <p class="para">Phone: +1 (415) 290-7465</p>
+                    <p class="para">Fax: +1 (415) 396-9570</p>
+                    <p class="para">Email: <a href="mailto:info@paradise.com">info@paradise.com</a></p>
+                 </div>
+                <br/>
+                <div class="introduction">
+                    <h4>Customer Detail</h4>
+                    <p class="para">
+                    Name: <label id="lblname"></label>
+                    <br/>
+                    Phone: <label id="lblphone"></label>
+                    <br/>
+                    Email: <label id="lblemail"></label>                   
+                    <br/>                    
+                    </p>
+                 </div>
+                <br/>  
+                <div class="introduction">
+                    <h4>Reservation Detail</h4>
+                    <p class="para">                    
+                    Room Type: <label id="lblroom"></label> room
+                    <br/>
+                    No of rooms: <label id="lblnoofroom"></label>
+                    <br/>
+                    From <label id="lblcheckin"></label> - To <label id="lblcheckout"></label>                 
+                    <br/>  
+                    Price:<label id="lblprice"></label>
+                    <br/>
+                    Payment: Done
+                    </p>
+                </div>
+                <br/>
+                <div class="res_btn">
+                    <input type="button" id="btnPrint" onClick="window.print();return false;" value="Print Receipt">
+                </div>                
+                </div>
+            </div>
+       </div>
+    </body>
+</html>

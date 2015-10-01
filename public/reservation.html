@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>The Paradise-Hotel</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <meta name="google-site-verification" content="vO6Ea87_ah24PvSHkMDH1i-FB-F5ES024G8r4QJ4m0" />
+        <meta name="description" content="Online hotel room reservation web site.">
+        <meta name="keywords" content="Online Hotel Reservation, Paradise Hotel, San Francisco">
+        <meta name="rating" content="General">
+        <meta name="revisit-after" content="7 days">
+        <meta name="ROBOTS" content="follow,all">
+        <meta NAME="Author" CONTENT="contact@paradise.com">
+        <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+        <script src="js/jquery.min.js"></script>      
+        <script src="js/jquery-ui.min.js"></script>   
+        <link rel="stylesheet" href="css/jquery-ui.css" />
+        <script src="js/jquery-ui.js"></script>
+        <script>
+            $(function() {
+                $("#checkindate,#checkoutdate" ).datepicker();
+                $("#footerDiv").load("footer.html");
+                $("#headerDiv").load("header.html");
+                $("#btnCheck").click(function(event){
+                    loadXMLDoc();
+                });
+                loadValues();
+            });
+            
+            function GetQueryStringParams(sParam){
+                var sPageURL = window.location.search.substring(1);
+                var sURLVariables = sPageURL.split('&');
+                for (var i = 0; i < sURLVariables.length; i++)
+                {
+                    var sParameterName = sURLVariables[i].split('=');
+                    if (sParameterName[0] === sParam)
+                    {
+                        return sParameterName[1];
+                    }
+                }
+            }
+                
+            function loadValues(){
+                var roomtype = GetQueryStringParams('roomType');
+                var checkindate = GetQueryStringParams('checkindate');
+                var checkoutdate = GetQueryStringParams('checkoutdate');
+                var noofperson = GetQueryStringParams('noofperson');
+                
+                if(roomtype !== undefined){
+                    document.getElementById("roomType").value = roomtype;
+                }
+                if(checkindate !== undefined){
+                   document.getElementById("checkindate").value = checkindate.replace(/%2F/g,"/");
+                }
+                if(checkoutdate !== undefined){
+                    document.getElementById("checkoutdate").value = checkoutdate.replace(/%2F/g,"/");
+                }
+                if(noofperson !== undefined){
+                    document.getElementById("noofperson").value = noofperson;
+                }
+            }
+            
+            function loadXMLDoc()
+            {
+                var xmlhttp;
+                if (window.XMLHttpRequest)
+                {// code for IE7+, Firefox, Chrome, Opera, Safari
+                  xmlhttp=new XMLHttpRequest();
+                }
+                else
+                {// code for IE6, IE5
+                  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                xmlhttp.onreadystatechange=function()
+                {
+                  if (xmlhttp.readyState===4 && xmlhttp.status===200)
+                    {
+                        document.getElementById("roomlistdiv").innerHTML=xmlhttp.responseText;   
+                        loadPrice();
+                        var roomtype = $("#roomType option:selected").val();
+                        if(roomtype === "single"){
+                            document.getElementById("singleroomdiv").style.display = 'block';
+                            document.getElementById("doubleroomdiv").style.display = 'none';
+                            document.getElementById("suiteroomdiv").style.display = 'none';
+                        }
+                        else if(roomtype === "double"){
+                            document.getElementById("singleroomdiv").style.display = 'none';
+                            document.getElementById("suiteroomdiv").style.display = 'none';
+                            document.getElementById("doubleroomdiv").style.display = 'block';
+                        }
+                        else if(roomtype === "suite"){
+                            document.getElementById("singleroomdiv").style.display = 'none';
+                            document.getElementById("suiteroomdiv").style.display = 'block';
+                            document.getElementById("doubleroomdiv").style.display = 'none';
+                        }
+                    }
+                };                
+                xmlhttp.open("GET","roomlist.html",true);
+                xmlhttp.send();
+            }
+            
+            function selectRoom(price){
+                var roomtype = document.getElementById("roomType").value;
+                var checkindate = document.getElementById("checkindate").value;
+                var checkoutdate = document.getElementById("checkoutdate").value;
+                var noofrooms = document.getElementById("noofrooms").value;
+                var priceval = document.getElementById(price).innerHTML.toString().substring(1,4);
+                if(roomtype !== "" && checkindate !== "" && checkoutdate !== "" && noofperson !== ""){
+                    var queryString = "?roomType=" + roomtype + "&checkindate=" + checkindate + "&checkoutdate=" + checkoutdate + "&price=" + priceval + "&noofrooms=" + noofrooms;
+                    window.location.href = "register.html" + queryString;
+                }
+            }
+            
+            
+        </script>   
+        <script>            
+            function loadPrice(){            
+                $.getJSON('pricelist.json', function(data) {
+                   for (var i in data.roomtype) {
+                       var lableid = "lbl" + data.roomtype[i].name;
+                       document.getElementById(lableid).innerHTML=data.roomtype[i].price;
+                   }                
+               });
+            }
+        </script> 
+    </head>
+    <body>
+        <div id="headerDiv"></div>
+        <div class="main_bg">
+        <div class="wrap">
+                <div class="main">
+                        <div class="res_online">
+                                <h4>Reservation</h4>
+                              
+                                <div class="span_of_2">
+                                        <div class="span2_of_1">
+                                                <h4>check-in:</h4>
+                                                <div class="book_date btm">
+                                                        <div class="book_date">
+                                                    <input class="date" id="checkindate" name="checkindate" type="text" placeholder="DD/MM/YY" required>
+                                                </div>	
+                                                </div>	
+                                                <div class="sel_room">
+                                                        <h4>Room Type</h4>
+                                                         <select id="roomType" name="roomType" required>
+                                                                <option value="">Select a type of room</option>
+                                                                <option value="suite">Suite room</option>         
+                                                                <option value="single">Single room</option>
+                                                                <option value="double">Double room</option>
+                                                         </select>
+                                                </div>	
+                                                <div class="sel_room left">
+                                                        <h4>No Of rooms</h4>
+                                                        <select id="noofrooms" name="noofrooms">
+                                                                <option value="1">1</option>
+                                                                <option value="2">2</option>         
+                                                                <option value="3">3</option>
+                                                                <option value="4">4</option>
+                                                        </select>
+                                                </div>	
+                                        </div>
+                                        <div class="span2_of_1">
+                                                <h4>check-out:</h4>
+                                                <div class="book_date btm">
+                                                        <div class="book_date">
+                                                            <input class="date" id="checkoutdate" name="checkoutdate" type="text" placeholder="DD/MM/YY" required>
+                                                        </div>	
+                                                </div>	
+                                                <div class="sel_room">
+                                                        <h4>adults per room:</h4>
+                                                        <select id="noofperson" name="noofperson">
+                                                                <option value="1">1</option>
+                                                                <option value="2">2</option>         
+                                                                <option value="3">3</option>
+                                                                <option value="4">4</option>
+                                                        </select>
+                                                </div>	
+                                                <div class="sel_room left">
+                                                <div class="res_btn">				
+                                                    <input type="submit" id="btnCheck" value="Check Availability">
+                                                </div>
+                                                </div>	
+                                        </div>                            
+                                        <div class="clear"></div>
+                                </div>                               
+                                <div class="roomslist" id="roomlistdiv">
+                                       
+                                </div>                              
+                        </div>
+                </div>
+        </div>
+        </div>		
+        <div id="footerDiv"></div>
+</body>
+</html>
